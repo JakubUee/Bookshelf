@@ -1,0 +1,43 @@
+package ch.bzz.booklist.service;
+
+import ch.bzz.booklist.data.DataHandler;
+import ch.bzz.booklist.model.Book;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.util.HashSet;
+import java.util.List;
+
+@Path("book")
+public class BookshelfService {
+
+    @GET
+    @Path("list")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response listBooks() {
+
+        List<Book> bookMap = DataHandler.getInstance().readAllBooks();
+
+        return Response
+                .status(200)
+                .entity(bookMap)
+                .build();
+    }
+
+    @GET
+    @Path("read")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response readBook(
+            @QueryParam("uuid") String bookUUID
+    ){
+        Book book = DataHandler.getInstance().readBookByUUID(bookUUID);
+        return Response
+                .status(200)
+                .entity(book)
+                .build();
+    }
+}
